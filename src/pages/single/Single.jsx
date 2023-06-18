@@ -1,13 +1,37 @@
+
+
 import './single.scss';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar';
 import Navbar from '../../components/navbar/Navbar';
-import Chart from '../../components/chart/Chart'
-
+import Chart from '../../components/chart/Chart';
 
 const Single = () => {
+  const { id } = useParams();
+  const [userData, setUserData] = useState({});
+  const [error, setError] = useState(null);
+console.log(userData)
 
-  const [userData, setUserData]=useState(null)
+  useEffect(() => {
+    fetch(`http://localhost:8000/user/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        return setUserData(res);
+
+      })
+      .catch((error) => {
+        console.log('Error fetching user:', error);
+        setError('Error fetching user. Please try again later.');
+      });
+  }, [id]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  if (userData === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='single'>
@@ -18,31 +42,23 @@ const Single = () => {
           <div className="left">
             <div className="editButton">Edit</div>
             <h1 className="title">Information</h1>
-            <div className="item">
+    
+            <div className="item" key={userData.id}>
               <img
                 src='https://bilder.pcwelt.de/4312559_original.jpg'
-                alt='' className='itemImg'
+                alt=''
+                className='itemImg'
               />
               <div className="details">
-                <h1 className="itemTitle">Vilena Shadyan</h1>
+                <h1 className="itemTitle">Name: {userData.userName}</h1>
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
-                  <span className="itemValue">shadyan@gmail.com</span>
-                </div>
-                <div className="detailItem">
-                  <span className="itemKey">Phone:</span>
-                  <span className="itemValue">+37499 999 999</span>
-                </div>
-                <div className="detailItem">
-                  <span className="itemKey">Adress:</span>
-                  <span className="itemValue">Erevan</span>
-                </div>
-                <div className="detailItem">
-                  <span className="itemKey">Country:</span>
-                  <span className="itemValue">Armenia</span>
+                  <input className="itemValue" value={userData.email} />
+                  <span >{}</span>
                 </div>
               </div>
             </div>
+
           </div>
           <div className="right">
             <Chart aspect={3 / 1} title={"User Spending (Last 6 months)"} />
@@ -50,11 +66,11 @@ const Single = () => {
         </div>
         <div className="bottom">
           <h1 className="title">Last Transactions</h1>
-          <List />
+          
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Single;

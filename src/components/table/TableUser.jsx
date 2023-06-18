@@ -89,7 +89,7 @@ const TableUser = () => {
                 <TableCell className="tableCell">
                   <div className="cellAction">
 
-                    <Link to="/users/test " style={{ textDecoration: "none" }}>
+                    <Link to={`/user/${user.id}`}  style={{ textDecoration: "none" }}>
                       <PreviewIcon className="viewButton" titleAccess="View" />
                     </Link>
                     <EditIcon className="viewButton" titleAccess="Edit"/>

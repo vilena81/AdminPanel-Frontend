@@ -2,19 +2,19 @@ import './new.scss';
 import Sidebar from '../../components/sidebar/Sidebar';
 import Navbar from '../../components/navbar/Navbar';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
-const New = ({ inputs, title }) => {
+const New = () => {
   const [file, setFile] = useState("");
-// console.log(file)
+console.log(file)
   return (
     <div className="new">
       <Sidebar />
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>{title}</h1>
+          <h1>Add product</h1>
         </div>
         <div className="bottom">
           <div className="left">
@@ -40,13 +40,31 @@ const New = ({ inputs, title }) => {
                   style={{ display: "none" }}
                 />
               </div>
-
-              {inputs.map((input) => (
-                <div className="formInput" key={input.id}>
-                  <label>{input.label}</label>
-                  <input type={input.type} placeholder={input.placeholder} />
+              <div className="formInput" >
+                  <label>image URL</label>
+                  <input  />
                 </div>
-              ))}
+                <div className="formInput" >
+                  <label>name</label>
+                  <input  />
+                </div>
+                <div className="formInput" >
+                  <label>description</label>
+                  <input  />
+                </div>
+                <div className="formInput" >
+                  <label>price</label>
+                  <input  />
+                </div>
+                <div className="formInput" >
+                  <label>quantity</label>
+                  <input  />
+                </div>
+                <div className="formInput" >
+                  <label>Category Id</label>
+                  <input  />
+                </div>
+              
               <button>Send</button>
             </form>
           </div>
