@@ -9,7 +9,7 @@ const ListProd = () => {
       <Sidebar/>
       <div className="listContainer">
         <Navbar/>
-        DatatableProduct in ListProd
+        
        
         <DatatableProduct />
       </div>

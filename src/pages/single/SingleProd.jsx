@@ -34,6 +34,8 @@ if (productData === null) {
   return <div>Loading...</div>;
 }
 
+
+
   return (
     <div className='single'>
       <Sidebar />

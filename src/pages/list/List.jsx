@@ -11,7 +11,7 @@ const List = () => {
       <Sidebar />
       <div className="listContainer">
         <Navbar />
-        Datatable from user!!!!!!!
+        
         <DatatableUser />
 
 

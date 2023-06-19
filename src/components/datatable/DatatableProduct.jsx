@@ -1,15 +1,16 @@
 
 import './datatable.scss';
 import { DataGrid } from '@mui/x-data-grid';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 
 const DatatableProduct = () => {
   const [dataProducts, setDataProducts] = useState([]);
-
-  const handleDelete = (id) => {
-    setDataProducts(dataProducts.filter((item) => item.id !== id));
-  };
+  const history = useHistory()
+  // const handleDelete = (id) => {
+  //   setDataProducts(dataProducts.filter((item) => item.id !== id));
+  // };
 
   useEffect(() => {
     fetch("http://localhost:8000/products")
@@ -24,46 +25,97 @@ const DatatableProduct = () => {
       });
   }, []);
 
+  const deleteProduct = async (id) => {
+  const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`http://localhost:8000/product/${id}`,{
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+             Authorization: token,
+          },
+        }
+      );
+      if (response.ok) {
+        setDataProducts(dataProducts.filter((item) => item.id !== id));
+        console.log("Product deleted successfully!");
+      } else {
+        console.log("Failed to delete product");
+      }
+     
+    } catch (error) {
+      console.error("Error deleting product:",error);
+    }
+  };
+
+  const updateProduct = async (id, updatedProduct) => {
+    const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`http://localhost:8000/product/${id}`,{
+            method: "PUT",
+            body:JSON.stringify(updatedProduct),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+               Authorization: token,
+            },
+          }
+        );
+        if (response.ok) {
+          console.log("Product updated successfully!");
+        } else {
+          console.log("Failed to update product");
+        }
+       
+      } catch (error) {
+        console.error("Error updating product:",error);
+      }
+    };
+
+    const handleSave = (id) => {
+      const updatedProduct = dataProducts.find((product) => product.id === id);
+      updateProduct(id, updatedProduct);
+    };
+
   const actionColumn = [
     {
       field: "id",
       headerName: "Product Id",
-      width: 100,
+      width: 80,
     },
     {
       field: "name",
       headerName: "Product name",
-      width: 150,
+      width: 200,
     },
     {
       field: "img",
       headerName: "Product ",
-      width: 150,
+      width: 160,
     },
     {
       field: "description",
       headerName: "Description",
-      width: 150,
+      width: 200,
     },
     {
       field: "price",
-      headerName: "Product price",
-      width: 150,
+      headerName: "Price",
+      width: 130,
     },
     {
       field: "quantity",
       headerName: "Quantity",
-      width: 150,
+      width: 100,
     },
     {
       field: "CategoryId",
       headerName: "Category Id",
-      width: 100,
+      width: 80,
     },
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 260,
       renderCell: (params) => {
         return (
           <div className="cellAction">
@@ -73,9 +125,21 @@ const DatatableProduct = () => {
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => deleteProduct(params.row.id)}
             >
               Delete
+            </div>
+            <div
+              className="deleteButton"
+              onClick={() => updateProduct(params.row.id)}
+            >
+              Edit
+            </div>
+            <div
+              className="deleteButton"
+              onClick={() => handleSave(params.row.id)}
+            >
+              Save
             </div>
           </div>
         );
