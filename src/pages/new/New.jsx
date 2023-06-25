@@ -3,7 +3,13 @@ import Sidebar from '../../components/sidebar/Sidebar';
 import Navbar from '../../components/navbar/Navbar';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+import MyImage from './back.png'
 import { useNavigate } from 'react-router-dom';
+// import Snackbar from '@mui/material/Snackbar';
+// import MuiAlert from '@mui/material/Alert';
+
+
 
 const New = () => {
   const [file, setFile] = useState("");
@@ -15,8 +21,8 @@ const New = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [categoryId, setCategoryId] = useState("");
-
-  // const navigate = useNavigate()
+ 
+  const navigate = useNavigate()
 
   async function addProduct() {
 
@@ -37,26 +43,20 @@ const New = () => {
           "Content-Type": "application/json ; charset=UTF-8",
           Authorization: token,
         },
-
       });
-      console.log(product)
       const data = await response.json();
-
-      localStorage.setItem('token', data.token);
-
+      localStorage.setItem('token', data.jwt);
+      console.log("Data message:", data.message);
       if (data.message === "Product created!") {
-        // navigate('/products')
-        const successMessage = document.getElementById("success-message");
-        successMessage.textContent = "Product created successfully!";
-
-
+        // setShowSuccessMessage(true);
+        // alert("Product created successfully!")
+        console.log("Product created successfully!");
+        navigate ('/products')
       }
     } catch (error) {
-      console.log("An error occurred while creating the product:", error);
+      console.log("An error occurred while creating the product:", err);
+    res.status(500).json({ message: err.message });
     }
-
-    // value("")
-
   }
 
   return (
@@ -65,8 +65,11 @@ const New = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add product</h1>
+          <Link to='/products'> <img src={MyImage} width={40} style={{ paddingRight: "20px" }} /></Link>
+          <h1 >Add new product</h1>
+
         </div>
+
         <div className="bottom">
           <div className="left">
             <img
@@ -94,31 +97,41 @@ const New = () => {
               </div>
               <div className="formInput" >
                 <label>image URL</label>
-                <input value={img} onChange={(e)=>setImg(e.target.value)}/>
+                <input value={img} onChange={(e) => setImg(e.target.value)} />
               </div>
               <div className="formInput" >
                 <label>Name</label>
-                <input value={name} onChange={(e)=>setName(e.target.value)}/>
+                <input value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="formInput" >
                 <label>Description</label>
-                <input value={description} onChange={(e)=>setDescription(e.target.value)}/>
+                <input value={description} onChange={(e) => setDescription(e.target.value)} />
               </div>
               <div className="formInput" >
                 <label>Price</label>
-                <input value={price} onChange={(e)=>setPrice(e.target.value)}/>
+                <input value={price} onChange={(e) => setPrice(e.target.value)} />
               </div>
               <div className="formInput" >
                 <label>Quantity</label>
-                <input value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
+                <input value={quantity} onChange={(e) => setQuantity(e.target.value)} />
               </div>
               <div className="formInput" >
                 <label>CategoryId</label>
-                <input value={categoryId} onChange={(e)=>setCategoryId(e.target.value)}/>
+                <input value={categoryId} onChange={(e) => setCategoryId(e.target.value)} />
               </div>
 
               <button type='submit'>Send</button>
+
             </form>
+            {/* <div className="">
+             
+              <Snackbar open={showSuccessMessage} autoHideDuration={3000} onClose={() => setShowSuccessMessage(false)}>
+                <MuiAlert elevation={6} variant="filled" onClose={() => setShowSuccessMessage(false)} severity="success">
+                  Product created successfully!
+                </MuiAlert>
+              </Snackbar>
+
+            </div> */}
           </div>
         </div>
       </div>
@@ -127,3 +140,4 @@ const New = () => {
 };
 
 export default New;
+

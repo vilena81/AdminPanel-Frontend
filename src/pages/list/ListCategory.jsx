@@ -9,8 +9,6 @@ const ListCategory = () => {
       <Sidebar/>
       <div className="listContainer">
         <Navbar/>
-        DatatableCategory!!!!!!!!!
-       
         <DatatableCategory />
       </div>
     </div>

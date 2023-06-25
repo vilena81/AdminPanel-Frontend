@@ -16,15 +16,16 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
-
+import Apple from '/public/apple1.png'
 
 const Sidebar = () => {
   const {dispatch}= useContext(DarkModeContext)
   return (
     <div className='sidebar'>
       <div className="top">
+          <img src={Apple} width={50}/>
         <Link to="/" style={{ textDecoration: "none" }}>
-           <span className="logo">My iPhone</span>
+         <p><span className="logo">My Apple</span> </p>  
         </Link>
       </div>
       <hr />

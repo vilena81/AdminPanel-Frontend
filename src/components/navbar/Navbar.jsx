@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import "./navbar.scss"
 import MyImage from '../navbar/ap.webp'
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+// import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import CloseFullscreenOutlinedIcon from '@mui/icons-material/CloseFullscreenOutlined';
@@ -16,9 +16,9 @@ const Navbar = () => {
   return (
     <div className='navbar'>
       <div className="wrapper">
-        <div className="search">
-          <input type='text' placeholder='Search...' />
-          <SearchOutlinedIcon className='icon'/>
+        <div className="searchc">
+          {/* <input type='text' placeholder='Search...' />
+          <SearchOutlinedIcon className='icon'/> */}
         </div>
         <div className="items">
           <div className="item">

@@ -1,16 +1,21 @@
 
 import './datatable.scss';
 import { DataGrid } from '@mui/x-data-grid';
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const DatatableProduct = () => {
+
+  const [editingProduct, setEditingProduct] = useState(null)
   const [dataProducts, setDataProducts] = useState([]);
-  const history = useHistory()
-  // const handleDelete = (id) => {
-  //   setDataProducts(dataProducts.filter((item) => item.id !== id));
-  // };
+  const [name, setName] = useState("")
+  const [img, setImg] = useState("")
+  const [description, setDescription] = useState("")
+  const [price, setPrice] = useState("")
+  const [categoryId, setCategoryId] = useState("")
+  const [quantity, setQuantity] = useState("")
 
   useEffect(() => {
     fetch("http://localhost:8000/products")
@@ -21,20 +26,18 @@ const DatatableProduct = () => {
       })
       .catch((error) => {
         console.error("Error fetching productss:", error);
-
       });
   }, []);
-
   const deleteProduct = async (id) => {
-  const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:8000/product/${id}`,{
-          method: "DELETE",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-             Authorization: token,
-          },
-        }
+      const response = await fetch(`http://localhost:8000/product/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: token,
+        },
+      }
       );
       if (response.ok) {
         setDataProducts(dataProducts.filter((item) => item.id !== id));
@@ -42,75 +45,183 @@ const DatatableProduct = () => {
       } else {
         console.log("Failed to delete product");
       }
-     
     } catch (error) {
-      console.error("Error deleting product:",error);
+      console.error("Error deleting product:", error);
     }
   };
 
-  const updateProduct = async (id, updatedProduct) => {
-    const token = localStorage.getItem('token');
-      try {
-        const response = await fetch(`http://localhost:8000/product/${id}`,{
-            method: "PUT",
-            body:JSON.stringify(updatedProduct),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-               Authorization: token,
-            },
-          }
-        );
-        if (response.ok) {
-          console.log("Product updated successfully!");
-        } else {
-          console.log("Failed to update product");
-        }
-       
-      } catch (error) {
-        console.error("Error updating product:",error);
-      }
-    };
 
-    const handleSave = (id) => {
-      const updatedProduct = dataProducts.find((product) => product.id === id);
-      updateProduct(id, updatedProduct);
-    };
+  const updateProduct = async (id) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`http://localhost:8000/product/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: token,
+        },
+      });
+      if (response.ok) {
+        console.log("Product updated successfully!");
+        setEditingProduct(null);
+      } else {
+        console.log("Failed to updated product");
+      }
+    } catch (error) {
+      console.error("Error updating  product:", error);
+    }
+  };
+ 
+
+  const handleSave = (product) => {
+    updateProduct(product);
+  };
 
   const actionColumn = [
     {
       field: "id",
       headerName: "Product Id",
       width: 80,
+
     },
     {
       field: "name",
       headerName: "Product name",
-      width: 200,
+      width: 180,
+      renderCell: (params) => {
+        return (
+          <input
+            value={params.row.name}
+            onChange={(e) => setName(e.target.value)}
+            style={{ width: "100%", border: "none" }}
+          />
+        );
+      },
+      renderEditCell: (params) => {
+        return (
+          <input
+            value={params.row.name}
+            onChange={(e) => setName(e.target.value)}
+            style={{ width: "100%" }}
+          />
+        );
+      },
     },
     {
       field: "img",
-      headerName: "Product ",
-      width: 160,
+      headerName: "Product Image",
+      width: 180,
+      renderCell: (params) => {
+        return (
+          <input
+            value={params.row.img}
+            onChange={(e) => setImg(e.target.value)}
+            style={{ width: "100%", border: "none" }}
+          />
+        );
+      },
+      renderEditCell: (params) => {
+        return (
+          <input
+            value={params.row.img}
+            onChange={(e) => setImg(e.target.value)}
+            style={{ width: "100%" }}
+          />
+        );
+      },
     },
     {
       field: "description",
       headerName: "Description",
       width: 200,
+      renderCell: (params) => {
+        return (
+          <input
+            value={params.row.description}
+            onChange={(e) => setDescription(e.target.value)}
+            style={{ width: "100%", border: "none" }}
+          />
+        );
+      },
+      renderEditCell: (params) => {
+        return (
+          <input
+            value={params.row.description}
+            onChange={(e) => setDescription(e.target.value)}
+            style={{ width: "100%" }}
+          />
+        );
+      },
     },
     {
       field: "price",
       headerName: "Price",
-      width: 130,
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <input
+            value={params.row.price}
+            onChange={(e) => setPrice(e.target.value)}
+            style={{ width: "100%", border: "none" }}
+          />
+        );
+      },
+      renderEditCell: (params) => {
+        return (
+          <input
+            value={params.row.price}
+            onChange={(e) => setPrice(e.target.value)}
+            style={{ width: "100%" }}
+          />
+        );
+      },
     },
     {
       field: "quantity",
       headerName: "Quantity",
       width: 100,
+      renderCell: (params) => {
+        return (
+          <input
+            value={params.row.quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            style={{ width: "100%", border: "none" }}
+          />
+        );
+      },
+      renderEditCell: (params) => {
+        return (
+          <input
+            value={params.row.quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            style={{ width: "100%" }}
+          />
+        );
+      },
     },
     {
       field: "CategoryId",
-      headerName: "Category Id",
-      width: 80,
+      headerName: "CategoryId",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <input
+            value={params.row.CategoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            style={{ width: "100%", border: "none" }}
+          />
+        );
+      },
+      renderEditCell: (params) => {
+        return (
+          <input
+            value={params.row.price}
+            onChange={(e) => setPrice(e.target.value)}
+            style={{ width: "100%" }}
+          />
+        );
+      },
     },
     {
       field: "action",
@@ -119,7 +230,6 @@ const DatatableProduct = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-           
             <Link to={`/product/${params.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
@@ -130,27 +240,24 @@ const DatatableProduct = () => {
               Delete
             </div>
             <div
-              className="deleteButton"
-              onClick={() => updateProduct(params.row.id)}
-            >
-              Edit
-            </div>
-            <div
-              className="deleteButton"
-              onClick={() => handleSave(params.row.id)}
-            >
+               className="deleteButton"
+               onClick={() => setEditingProduct( params.row)}
+             >
+              <EditIcon />
+             </div>
+            <div className="deleteButton" onClick={() => handleSave(params.row.id)}>
               Save
             </div>
+
           </div>
         );
       },
     },
   ];
-
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Product
+        All Products
         <Link to="/product/new" className="link">
           Add New
         </Link>
@@ -166,5 +273,4 @@ const DatatableProduct = () => {
     </div>
   );
 };
-
 export default DatatableProduct;
